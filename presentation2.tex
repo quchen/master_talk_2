@@ -10,7 +10,7 @@
 
 \mode<presentation>
 {
-  \usetheme{Dresden}
+  \usetheme{boxes}
   \setbeamercovered{transparent}
 }
 
@@ -74,10 +74,10 @@
 	\titlepage
 \end{frame}
 
-\begin{frame}{Outline}
-  \tableofcontents
-  % You might wish to add the option [pausesections]
-\end{frame}
+% \begin{frame}{Outline}
+%   \tableofcontents
+%   % You might wish to add the option [pausesections]
+% \end{frame}
 
 
 \section{Introduction}
@@ -121,7 +121,7 @@
 		\include{process_graphic}
 	\end{figure}
 	\vspace{-2em}
-	\(\rightarrow\) chain of states \(\gamma : c_0\to c_1\to c_2\to\ldots\quad\) at times \(t_0,t_1,t_2,\ldots\)
+	\(\rightarrow\) chain of states \(\gamma : c_0\to c_1\to c_2\to\ldots\)~ at times \(t_0,t_1,t_2,\ldots\)
 \end{frame}
 
 
@@ -147,7 +147,7 @@
 		\item Measure of how many different outcomes the system can have at time \(t\) - ``how big is the pase space region that can be reached''
 		\item Shannon entropy is the mean system entropy, i.e. the average over all configurations:
 			\Align{
-				\langle S_{\text{System}}(t) \rangle = \sum_c -P_{c(t)} (t)\ln P_{c(t)} (t)
+				\langle S_{\text{System}}(t) \rangle = \sum_{c\in\Omega} -P_{c(t)} (t)\ln P_{c(t)} (t)
 			}
 	\end{itemize}
 \end{frame}
@@ -164,7 +164,7 @@
 	}
 	\begin{itemize}
 		\item Measure of how much more likely a transition in one direction (\emph{rate} \(w_\rightarrow\)) is compared to the reverse direction (\(w_\leftarrow\)).
-		\item Each jump changes \(S_{\text{env}}\) discontinuously
+		\item Each jump changes \(S_{\text{env}}\) discontinuously.
 	\end{itemize}
 	
 \end{frame}
@@ -189,7 +189,9 @@
 
 	Environmental entropy produced by this system along a trajectory \(\gamma\) starting at \(q_0\):
 	\Align{
-		\Delta S_\text{env} = \ln\frac{P[\gamma | q_0]}{P^\dagger[\gamma^\dagger|q_0^\dagger]}
+		\Delta S_\text{env}
+			= \ln\frac{P[\gamma | q_0]}{P^\dagger[\gamma^\dagger|q_0^\dagger]}
+			\cong \ln\frac{w_\rightarrow}{w_\leftarrow}
 	}
 	\(\dagger\) stands for path and time reversal,
 	\Align{
@@ -211,7 +213,7 @@
 	\Align{
 		\Delta S_\text{env} = \ln\frac{P[\gamma | q_0]}{P^\dagger[\gamma^\dagger|q_0^\dagger]}
 	}
-	However, this leads to momenta pointing in the other direction as velocities.
+	However, this leads to momenta pointing in the other direction as velocities on the reverse path.
 \end{frame}
 
 
@@ -219,7 +221,7 @@
 	\frametitle{Spinney/Ford approach: reverse momenta}
 	\begin{figure}[htb]
 		\vspace{-1em}
-		\includegraphics[width=15em]{reversal.png}
+		\includegraphics[width=26em]{reversal.png}
 		\vspace{-1em}
 	\end{figure}
 	\begin{itemize}
@@ -232,7 +234,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{From equations of motion to entropy}
+	\frametitle{From the equations of motion to entropy}
 
 	Rewrite the equations of motion to the corresponding Fokker-Planck equation
 	\Align{
@@ -242,7 +244,7 @@
 	From this, the Green's function/short-time propagator \(G_a(\vec x'|\vec x\;;\mathrm dt)\) can be calculated, which \ldots
 	\begin{itemize}
 		\item solves the FP equation to lowest order in \(\mathrm dt\)
-		\item is not unique, represented by the index \(a\)
+		\item is not unique, represented by the index \(a\) (similar to the It\={o}-Stratonovich dichotomy)
 		\item Repeated application (convolution) yields the full propagagor
 	\end{itemize}
 
@@ -264,11 +266,11 @@
 
 \begin{frame}
 	\frametitle{Spinney/Ford differential entropy production}
-	Using this approach, we showed that the Spinney/Ford approach for the simplest case of \(\gamma(p),\Gamma(p)=const\) yields
+	Using this approach, we showed that the Spinney/Ford approach for the simplest case of constant \(\gamma(p),\Gamma(p)\) yields
 	\Align{
 		\mathrm dS_\text{env} = -\beta p\mathrm dp - \gamma \mathrm dt
 	}
-	This seems very implausible, as a resting particle (\(p=0\)) produces negative entropy over time.
+	This seems very implausible, as a resting particle (\(p=0\)) produces negative entropy over time. This peculiar property of Spinney/Ford's approach motivated our research.
 \end{frame}
 
 \begin{frame}
@@ -289,7 +291,7 @@
 	Can we redefine the path reversal to solve these issues?
 	\begin{figure}[htb]
 		\vspace{-1em}
-		\includegraphics[width=18em]{trajectories.png}
+		\includegraphics[width=26em]{trajectories.png}
 		\vspace{-1em}
 	\end{figure}
 	\begin{itemize}
@@ -344,6 +346,51 @@
 
 
 \end{frame}
+
+
+\begin{frame}
+	\frametitle{Example system}
+	For a system obeying detailed balance (FP equation stationary):
+	\Align{
+		\mathrm dS_\text{env} = \begin{cases}
+			-\beta p(\mathrm d p + V'(q)\mathrm dt) {\color{red}- \frac\beta2\Gamma(p)^2\mathrm dt}
+				& \text{Spinney/Ford}
+				\\
+			-\beta p(\mathrm d p + V'(q)\mathrm dt)
+				& \text{Our model}
+			\end{cases}
+	}
+	Because of the {\color{red}red term}, only our result vanishes along the deterministic trajectory \(\dot p = -V'(q)\). However,
+	\Align{
+		\dot S_\text{env} = -\frac12\Gamma(p)^2 + \frac23\beta^2p^2\Gamma(p)^2-\beta p\Gamma(p)\Gamma'(p)
+	}
+	is identical in both cases, as is the equilibrium entropy production,
+	\Align{
+		\langle\dot S_\text{env}\rangle_\text{DB} = \int_\Omega \mathrm dp \mathrm dq \frac{e^{-\beta(\frac{p^2}2-V(q))}}Z \dot S_\text{env}(q,p) = 0
+	}
+	which is the desired result, as a system obeying detailed balance should not produce entropy in the environment.
+
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Conclusion}
+
+	\begin{itemize}
+		\item Spinney/Ford's differential entropy production shows odd behaviour in some cases
+		\item Redefining the ``backwards'' path solves this issue, taking the non-stochastic Hamiltonian flow into accounthttps://news.ycombinator.com/item?id=5977495
+		\item Both approaches yield the same physical quantity \(\dot S_\text{env}\)
+	\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+	\begin{center}Thanks for your attention!\end{center}
+\end{frame}
+
 
 
 
