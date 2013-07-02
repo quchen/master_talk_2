@@ -1,0 +1,357 @@
+\documentclass{beamer}
+
+\newcommand\SSys{\ensuremath{S_{\text{sys}}}}
+\newcommand\SEnv{\ensuremath{S_{\text{env}}}}
+\newcommand\STot{\ensuremath{S_{\text{tot}}}}
+
+\input{commands}
+\input{packages}
+\input{tikz}
+
+\mode<presentation>
+{
+  \usetheme{Dresden}
+  \setbeamercovered{transparent}
+}
+
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+% \title[Short Paper Title] % (optional, use only with long paper titles)
+% {Title As It Is In the Proceedings}
+\title{Entropy in continuous phase space}
+
+%\subtitle{Include Only If Paper Has a Subtitle}
+
+\author{David Luposchainsky}
+
+\institute[University of Würzburg]{
+	University of Würzburg, Institute of Theoretical Physics 3
+}
+
+\date{Group seminar presentation}
+
+\subject{Entropy}
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+% \AtBeginSubsection[]
+% {
+%   \begin{frame}<beamer>{Outline}
+%     \tableofcontents[currentsection,currentsubsection]
+%   \end{frame}
+% }
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+  % You might wish to add the option [pausesections]
+\end{frame}
+
+
+\section{Introduction}
+
+\subsection{Basic entropy-producing processes}
+
+\begin{frame}
+	\frametitle{Entropy-producing processes of interest}
+	\begin{itemize}
+		\item Discrete: Markov jump processes. Spontaneous transitions between discrete configurations \(c\in\Omega\) with rates \(w_{c\to c'}\)
+		\item Continuous, overdamped -- ``no momentum'' following a DE of the form
+			\Align{
+				\dot q = F(q) + \Gamma(q)\xi(t)
+			}
+		\item Continuous, underdamped -- full phase space required, e.g.
+			\Align{
+				\dot q &= p \\
+				\dot p &= F(q) -\gamma(p)p+ \Gamma(p)\xi(t)
+			}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Last time: Discrete systems}
+	\begin{itemize}
+		\item Set of discrete microstates \(c\in\Omega\)
+		\item Continuous time
+		\item Transitions between the microstates at transition rates \(w_{c\to c'}\)
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Stochastic trajectories}
+	The evolution of a system looks like
+	\vspace{-2em}
+	\begin{figure}[htb]
+		\centering
+		\include{process_graphic}
+	\end{figure}
+	\vspace{-2em}
+	\(\rightarrow\) chain of states \(\gamma : c_0\to c_1\to c_2\to\ldots\quad\) at times \(t_0,t_1,t_2,\ldots\)
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Master equation}
+	The dynamics of such a system are described by the Master equation:
+	\Align{
+		\pdq{}tP_c(t) = \sum_{c'}\left({\color{green}P_{c'}(t)w_{c'\to c}} {\color{red}- P_{c}(t)w_{c\to c'}}\right)
+	}
+	Can be read as the sum of {\color{green}incoming} and {\color{red}outgoing}  probability currents.
+\end{frame}
+
+\begin{frame}
+	Entropy can be split up in two parts:
+	\Align{
+		S_{\text{total}} = S_{\text{system}} + S_{\text{environment}}
+	}
+	\underline{System entropy} along a stochastic trajectory \(\gamma\):
+	\Align{
+		S_{\text{system}}(t) = -\ln P_{c(t)} (t)
+	}
+	\begin{itemize}
+		\item Measure of how many different outcomes the system can have at time \(t\) - ``how big is the pase space region that can be reached''
+		\item Shannon entropy is the mean system entropy, i.e. the average over all configurations:
+			\Align{
+				\langle S_{\text{System}}(t) \rangle = \sum_c -P_{c(t)} (t)\ln P_{c(t)} (t)
+			}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	Entropy can be split up in two parts:
+	\Align{
+		S_{\text{total}} = S_{\text{system}} + S_{\text{environment}}
+	}
+	
+	\underline{Environmental entropy} is easier to think about as a difference:
+	\Equation{
+		\Delta\SEnv = \ln w_{\rightarrow} - \ln w_{\leftarrow} = \ln \frac{w_{\rightarrow}}{w_{\leftarrow}}
+	}
+	\begin{itemize}
+		\item Measure of how much more likely a transition in one direction (\emph{rate} \(w_\rightarrow\)) is compared to the reverse direction (\(w_\leftarrow\)).
+		\item Each jump changes \(S_{\text{env}}\) discontinuously
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Continuous, overdamped systems}
+	Space-continuous version of the master equation:
+	\Align{
+		\dot q &= {\color{red}F(q)} + {\color{blue}\Gamma(q)}{\color{green}\xi(t)}
+	}
+	with {\color{red}Force}, {\color{green} Gaussian noise with \(\langle\xi(t)\xi(t')\rangle\propto\delta(t-t')\)}, {\color{blue} noise coefficient}.
+
+	\begin{itemize}
+		\item How does environmental entropy translate to this system?
+		\item What does ``jump in the reverse direction'' mean?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Continuous environmental entropy (overdamped)}
+
+	Environmental entropy produced by this system along a trajectory \(\gamma\) starting at \(q_0\):
+	\Align{
+		\Delta S_\text{env} = \ln\frac{P[\gamma | q_0]}{P^\dagger[\gamma^\dagger|q_0^\dagger]}
+	}
+	\(\dagger\) stands for path and time reversal,
+	\Align{
+		q^\dagger(t) = q(T-t) \qquad q_0^\dagger = q_T \qquad F^\dagger(x,t) = F(x,T-t)
+	}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Continuous, underdamped systems}
+
+	Adding a friction term requires also considering momenta, making the full phase space necessary:
+	\Align{
+		\dot q &= p \\
+		\dot p &= F(q) -\gamma(p)p+ \Gamma(p)\xi(t)
+	}
+
+	The naive way of defining \(\Delta S_\text{env}\) is just by carrying it over from the overdamped limit,
+	\Align{
+		\Delta S_\text{env} = \ln\frac{P[\gamma | q_0]}{P^\dagger[\gamma^\dagger|q_0^\dagger]}
+	}
+	However, this leads to momenta pointing in the other direction as velocities.
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Spinney/Ford approach: reverse momenta}
+	\begin{figure}[htb]
+		\vspace{-1em}
+		\includegraphics[width=15em]{reversal.png}
+		\vspace{-1em}
+	\end{figure}
+	\begin{itemize}
+		\item Time reversal in the Hamiltonian formalism is equivalent to \(p\to -p\)
+		\item Not all variables transform the same under \(t\to-t\) -- ``odd and even variables'' need to be distinguished:
+			\Align{
+				\gamma = \{q(t),p(t)\} \longrightarrow \gamma^\dagger = \{\varepsilon q(T-t),\varepsilon p(T-t)\}
+			}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{From equations of motion to entropy}
+
+	Rewrite the equations of motion to the corresponding Fokker-Planck equation
+	\Align{
+		\dot P(x,t) = -\sum_i\partial_i\underbrace{(A_i(x,t)P(x,t)-\partial_i(D_i(x,t)P(x,t)))}_{J(x,t)} \\
+		\text{where } x = (q, p)
+	}
+	From this, the Green's function/short-time propagator \(G_a(\vec x'|\vec x\;;\mathrm dt)\) can be calculated, which \ldots
+	\begin{itemize}
+		\item solves the FP equation to lowest order in \(\mathrm dt\)
+		\item is not unique, represented by the index \(a\)
+		\item Repeated application (convolution) yields the full propagagor
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{From equations of motion to entropy}
+
+	After obtaining the (lengthy) expression for \(G_a(\vec x'|\vec x\;;\mathrm dt)\), the differential (short-term) entropy production is
+	\Align{
+		\mathrm dS_\text{env}(\vec x'|\vec x;\;\mathrm dt) = \ln\frac{G_a(\vec x'|\vec x;\;\mathrm dt)}{G_b(\vec x'^\dagger|\vec x^\dagger;\;\mathrm dt)}
+	}
+	In the Spinney/Ford case (mirror momenta on the reverse path), this becomes
+	\Align{
+		\mathrm dS_\text{env}(q',p'|q,p;\;\mathrm dt) = \ln\frac{G_a(q',p'|q,p;\;\mathrm dt)}{G_b(q,-p|q',-p';\;\mathrm dt)}
+	}
+	Furthermore, Spinney/Ford show that \(a=1-b\) is the right choice of parameters, which cancels them both out.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Spinney/Ford differential entropy production}
+	Using this approach, we showed that the Spinney/Ford approach for the simplest case of \(\gamma(p),\Gamma(p)=const\) yields
+	\Align{
+		\mathrm dS_\text{env} = -\beta p\mathrm dp - \gamma \mathrm dt
+	}
+	This seems very implausible, as a resting particle (\(p=0\)) produces negative entropy over time.
+\end{frame}
+
+\begin{frame}
+	\frametitle{How to solve the problem?}
+	\begin{itemize}
+		\item Deterministic systems should not produce entropy.
+		\item Jumping to another state should produce environmental entropy.
+		\item Entropy production should be local, and not require jumping to another region of phase space entirely.
+	\end{itemize}
+	\underline{Idea:} What consitutes the ``state'' of a stochastic system? Could it be more than just a point in phase space?
+
+	\underline{Proposition:} Identify the whole Hamiltonian trajectory as ``the state'' of a system. Switching trajectories produces entropy, staying on it doesn't.
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{A new way of reversing paths}
+	Can we redefine the path reversal to solve these issues?
+	\begin{figure}[htb]
+		\vspace{-1em}
+		\includegraphics[width=18em]{trajectories.png}
+		\vspace{-1em}
+	\end{figure}
+	\begin{itemize}
+		\item Forward trajectory stays the same as in Spinney/Ford
+		\item Backward trajectory: Instead of reversing the path, consider how likely the reverse transition between orbits (instead of points) would have been
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{A new way of reversing paths}
+
+	In formulas, this idea reads
+	\Align{
+		&\mathrm dS_\text{env}(q',p'|q,p;\;\mathrm dt) = \\
+		&\qquad\ln\frac{G_a(q',p'|q,p;\;\mathrm dt)}{G_b(q+p\mathrm dt,p+f(q)\mathrm dt|q'-p'\mathrm dt,p'-f(q')\mathrm dt;\;\mathrm dt)}
+	}
+	Result for \(\mathrm dS_\text{env}\):
+	\begin{itemize}
+		\item Vanishes along the Hamiltonian flow (i.e. deterministic trajectories)
+		\item \(a = b = \frac12\) turns out to be the right choice of parameters for the propagator ambiguity
+	\end{itemize}
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Comparing the models}
+
+	\emph{Differential} entropy production \(\mathrm dS_\text{env}\) is not observable, the expected (average) entropy production however is. What difference do the models make in the result?
+
+	\Align{
+		\dot S_\text{env}(x) = \lim_{\mathrm dt\to0}\frac1{\mathrm dt}
+			\int_\Omega \mathrm dx'
+			G_c(\vec x'|\vec x;\;\mathrm dt)
+			\mathrm dS_\text{env}(\vec x'|\vec x;\;\mathrm dt)
+	}
+	\Align{
+		\dot S_\text{env}(t) = 
+			\int_\Omega \mathrm dx'
+			P(x,t)
+			\dot S_\text{env}(x)
+	}
+
+	Results:
+	\begin{itemize}
+		\item The (third) ambiguity parameter \(c\) does not appear in the result in lowest order
+		\item Both Spinney/Ford and the Flow model result in the same results, although the differential entropies are different
+	\end{itemize}
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+\end{document}
+
+
